@@ -164,7 +164,7 @@ export class UniSwapPoolMocker {
       return BigNumber.from(slot0.tick);
     }
     const ticks = await this.TwapTicks(twapInterval);
-    console.log("ticks", ticks[0].toString(), ticks[1].toString());
+    // console.log("ticks", ticks[0].toString(), ticks[1].toString());
     let tick = ticks[0].sub(ticks[1]).div(twapInterval);
     return tick;
   }
