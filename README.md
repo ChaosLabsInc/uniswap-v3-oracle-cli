@@ -1,4 +1,4 @@
-![Chaos Labs - Chainlink Collab](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/master/img/ChaosLabsUniswap.png)
+![Chaos Labs - Chainlink Collab](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ChaosLabsUniswap.png)
 
 This repository hosts a CLI utitlity for mocking Uniswap V3 Oracle prices in a local hardhat mainnet fork testing environment. Navigate to our [Quickstart](#quickstart) section to get the repo up and running.
 
@@ -18,7 +18,7 @@ Volatility is a DeFi constant and is something that all protocols and applicatio
 
 Imagine a lending protocol (Maker, AAVE, Benqi, Spectral.finance, etc..) that accepts Ethereum as collateral against stablecoin loans. What happens on a day like Black Thursday, when Ethereum prices cascade negatively to the tune of ~70% in a 48 hour time frame? Well, a lot of things happen 🤦.
 
-![Black Thursday Img](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/master/img/Cascading-ETH.png)
+![Black Thursday Img](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/Cascading-ETH.png)
 
 One critical aspect of responding to market volatiltiy is protocol keepers triggering liquidations and thus ensuring protocol solvency.
 
@@ -52,7 +52,7 @@ Next, we'll want to run a mainnet fork. We need the fork so we can have a snapsh
 
 After running the quickstart you should have the following: 2 terminals, 1 running an alchemy mainnet fork, another running the cli-tool and it should look like this:
 
-![Setup screenshot](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/master/img/TerminalSetup.png)
+![Setup screenshot](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/TerminalSetup.png)
 
 ## Recommended Usage
 
@@ -70,13 +70,13 @@ This repo is meant to serve as an implementation spec for mocking oracle return 
 
 5. Deploy 🤝 💥
 
-![Example Flow](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/master/img/ExampleFlow.png)
+![Example Flow](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ExampleFlow.png)
 
 ## PR Requests
 
 Before submitting a PR please run the test suite with `npm run test`.
 
-![Test run](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/master/img/RunTests.png)
+![Test run](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/RunTests.png)
 
 - Ganache support
 - CLI improvements. Have an idea to make this repo more user friendly? Let us know, or better yet, make a pull request :)
