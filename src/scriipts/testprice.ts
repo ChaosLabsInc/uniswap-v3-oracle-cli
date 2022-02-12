@@ -1,4 +1,4 @@
-import { UniSwapPoolMocker } from "./poolmocker";
+import { UniSwapPoolMocker } from "../mocker/poolmocker";
 
 const main = async () => {
   const poolAddress = "0x4e68ccd3e89f51c3074ca5072bbac773960dfa36";

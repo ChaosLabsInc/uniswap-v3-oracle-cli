@@ -1,0 +1,58 @@
+[
+  {
+    "name": "ETH/USDT",
+    "address": "0x4e68ccd3e89f51c3074ca5072bbac773960dfa36",
+    "decimals": {
+      "token0": 18,
+      "token1": 6
+    }
+  },
+  {
+    "name": "USDC/USDT",
+    "address": "0x3416cf6c708da44db2624d63ea0aaef7113527c6",
+    "decimals": {
+      "token0": 6,
+      "token1": 6
+    }
+  },
+  {
+    "name": "AAVE/ETH",
+    "address": "0x5ab53ee1d50eef2c1dd3d5402789cd27bb52c1bb",
+    "decimals": {
+      "token0": 18,
+      "token1": 18
+    }
+  },
+  {
+    "name": "DAI/ETH",
+    "address": "0x60594a405d53811d3bc4766596efd80fd545a270",
+    "decimals": {
+      "token0": 18,
+      "token1": 18
+    }
+  },
+  {
+    "name": "DAI/USDC",
+    "address": "0x6c6bc977e13df9b0de53b251522280bb72383700",
+    "decimals": {
+      "token0": 18,
+      "token1": 6
+    }
+  },
+  {
+    "name": "ETH/USDT",
+    "address": "0x11b815efb8f581194ae79006d24e0d814b7697f6",
+    "decimals": {
+      "token0": 18,
+      "token1": 18
+    }
+  },
+  {
+    "name": "USDC/ETH",
+    "address": "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8",
+    "decimals": {
+      "token0": 6,
+      "token1": 18
+    }
+  }
+]

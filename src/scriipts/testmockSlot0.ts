@@ -1,5 +1,5 @@
-import { UniSwapPoolMocker } from "./poolmocker";
-import { observationReadable, observeReadable } from "./utils";
+import { UniSwapPoolMocker } from "../mocker/poolmocker";
+import { observationReadable, observeReadable } from "../mocker/utils";
 
 const main = async () => {
   const poolAddress = "0x60594a405d53811d3bc4766596efd80fd545a270";

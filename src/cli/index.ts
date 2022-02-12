@@ -1,19 +1,19 @@
-import deployer from "../deploy/deploy";
+import { UniSwapPoolMocker } from "../mocker";
 import figlet from "figlet";
 import clear from "clear";
 import inquirer from "inquirer";
-import PriceFeeds from "../chainlink-data-feeds";
+import Pools from "../config/config.json";
 import Questions from "../questions";
 import Utils from "../utils";
 
-type PriceFeed = {
-  pair: string; // '1INCH / ETH'
-  proxy: string; // 0xwgmi
+type Pool = {
+  name: string;
+  address: string;
+  decimals: {
+    token0: number;
+    token1: number;
+  };
 };
-
-function contactName(name: string) {
-  return "Aggregator" + name;
-}
 
 const YOU_SELECTED = "You selected ";
 const { targetKey, logBlue, logGreen, logYellow } = Utils;
@@ -110,44 +110,14 @@ export = {
     logBlue(YOU_SELECTED + blockUpdate[QUESTION_NAMES.MOCK_AGGREGATOR_CHANGE_PACE]);
     return blockUpdate;
   },
-  deploy: async function deploy(
-    pairSelectionParsed: string,
-    priceFeeds: Array<PriceFeed>,
-    mockFunction: any,
-    initValue: any,
-    valueChangeSelection: any,
-    tickSelection: any
-  ): Promise<void> {
-    const selectedPriceFeed = priceFeeds.find((pf: PriceFeed) => pf.pair === pairSelectionParsed);
-    if (selectedPriceFeed === undefined) {
-      throw new Error("Could not find price feed...");
-    }
-    const { proxy } = selectedPriceFeed;
-    let name = contactName(mockFunction);
-    logGreen(
-      `Configuring pair proxy ${pairSelectionParsed.substring(
-        Number(targetKey(pairSelectionParsed))
-      )} at address ${proxy}`
-    );
-    await deployer.fetchValue(proxy);
-    console.log(
-      name,
-      proxy,
-      initValue[QUESTION_NAMES.MOCK_AGGREGATOR_BASE_VALUE],
-      valueChangeSelection[QUESTION_NAMES.MOCK_AGGREGATOR_VALUE_CHANGE],
-      tickSelection[QUESTION_NAMES.MOCK_AGGREGATOR_CHANGE_PACE]
-    );
-    await deployer.MockContract(
-      name,
-      proxy,
-      // @ts-ignore
-      initValue[QUESTION_NAMES.MOCK_AGGREGATOR_BASE_VALUE],
-      // @ts-ignore
-      valueChangeSelection[QUESTION_NAMES.MOCK_AGGREGATOR_VALUE_CHANGE],
-      // @ts-ignore
-      tickSelection[QUESTION_NAMES.MOCK_AGGREGATOR_CHANGE_PACE]
-    );
-    await deployer.fetchValue(proxy);
+  mock: async function mock(pool: Pool, twapInteraval: number, price: number): Promise<void> {
+    const rpcURL = "http://localhost:8545";
+    const mocker = new UniSwapPoolMocker(rpcURL, pool.address);
+
+    const originalPrices = await mocker.prices(twapInteraval, 18, 6);
+    logBlue(`Original Prices ${originalPrices}`);
+
+    await mocker.MockPrice(price, twapInteraval, pool.decimals.token0, pool.decimals.token1);
 
     logBlue(`Let's get to work 💼 😏 ...`);
     logYellow(figlet.textSync("Celebrate"));

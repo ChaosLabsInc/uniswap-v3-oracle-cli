@@ -1,29 +1,32 @@
-{ //https://github.com/microsoft/TypeScript-Node-Starter
+{
   "compilerOptions": {
-  "module": "commonjs",
-  "esModuleInterop": true,
-  "target": "es6",
-  "noImplicitAny": true,
-  "moduleResolution": "node",
-  "sourceMap": true,
-  "outDir": "build",
-  "baseUrl": ".",
-  "strict": true,
-  "types": [
-    "node",
-    "jest"
-  ],
-  "strictFunctionTypes": true,    
-  "alwaysStrict": true,                                
-  "paths": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "strict": true,
+    "types": [
+      "node",
+      "jest"
+    ],
+    "strictFunctionTypes": true,
+    "alwaysStrict": true,
+    "paths": {
       "*": [
-          "node_modules/*",
-          "src/types/*",
+        "node_modules/*",
+        "src/types/*",
       ]
     }
   },
-    "include": [
-        "src/**/*"
-    ],
-    "files": ["./hardhat.config.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "files": [
+    "./hardhat.config.ts"
+  ]
 }
