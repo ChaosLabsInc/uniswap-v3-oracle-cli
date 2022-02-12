@@ -1,4 +1,4 @@
-![Chaos Labs - Chainlink Collab](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ChaosLabsUniswap.png)
+![Chaos Labs - Chainlink Collab](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ChaosLabsUniswap.jpg)
 
 This repository hosts a CLI utitlity for mocking Uniswap V3 Oracle prices in a local hardhat mainnet fork testing environment. Navigate to our [Quickstart](#quickstart) section to get the repo up and running.
 
