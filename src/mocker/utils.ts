@@ -47,9 +47,11 @@ Price -> div decPer -> * 2^192  -> root -> tickFromSqrt -> * interval
 */
 export function priceToTickCulamtive(price: number, intevral: number, dec0: number, dec1: number): BigNumber {
   const denom = BigNumber.from(2).pow(192);
-  const bnPrice = BigNumber.from(price);
+  // we need fractionMultiplier because BigNumbers don't support fractions.
+  const fractionMultiplier = price < 1 ? 1 / price : 1;
+  const bnPrice = BigNumber.from(price * fractionMultiplier);
   const decPercision = 10 ** dec0 / 10 ** dec1;
-  const sqrt = BNsqrt(bnPrice.mul(denom).div(decPercision));
+  const sqrt = BNsqrt(bnPrice.mul(denom).div(fractionMultiplier).div(decPercision));
   const tickFromSqrt = getTickAtSqrtRatio(sqrt);
   return tickFromSqrt.mul(intevral);
 }

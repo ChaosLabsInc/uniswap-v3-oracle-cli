@@ -56,13 +56,20 @@ test(`mocker 2`, async () => {
     throw new Error("Cannot connect to local fork on 8545. This test requires a lock fork running.");
   }
 
-  //mock price:
+  //mock price big:
   const twapInterval = 200;
-  const price = 1055;
+  let price = 1055;
   await mocker.MockPrice(price, twapInterval, pool.decimals.token0, pool.decimals.token1);
-  const prices = await mocker.prices(twapInterval, pool.decimals.token0, pool.decimals.token1);
+  let prices = await mocker.prices(twapInterval, pool.decimals.token0, pool.decimals.token1);
   expect(prices[1]).toBeGreaterThan(price - 0.1);
   expect(prices[1]).toBeLessThan(price + 0.1);
   expect(prices[0]).toBeGreaterThan(1 / (price + 0.1));
   expect(prices[0]).toBeLessThan(1 / (price - 0.1));
+
+  //mock price big:
+  price = 0.005;
+  await mocker.MockPrice(price, twapInterval, pool.decimals.token0, pool.decimals.token1);
+  prices = await mocker.prices(twapInterval, pool.decimals.token0, pool.decimals.token1);
+  expect(prices[1]).toBeGreaterThan(price - 0.1);
+  expect(prices[1]).toBeLessThan(price + 0.1);
 });
