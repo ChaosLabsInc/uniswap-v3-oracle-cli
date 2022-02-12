@@ -2,9 +2,10 @@ import { UniSwapPoolMocker } from "../mocker";
 import figlet from "figlet";
 import clear from "clear";
 import inquirer from "inquirer";
-import Pools from "../config/config.json";
 import Questions from "../questions";
 import Utils from "../utils";
+
+const Pools: Array<Pool> = require("../config/config.json");
 
 type Pool = {
   name: string;
@@ -16,108 +17,59 @@ type Pool = {
 };
 
 const YOU_SELECTED = "You selected ";
-const { targetKey, logBlue, logGreen, logYellow } = Utils;
+const { logBlue, logGreen, logYellow } = Utils;
 const { QUESTION_NAMES } = Questions;
 const { prompt } = inquirer;
 
 export = {
   welcomeMessage: async function () {
     clear();
-    logGreen("🎉 ✨ 🔥 Mocked Chainlink Oracles by: 🎉 ✨ 🔥");
+    logGreen("🎉 ✨ 🔥 Mocked Uniswap V3 Oracles by: 🎉 ✨ 🔥");
     logBlue(figlet.textSync("Chaos Labs"));
   },
-  getEthereumProxiesForNetwork: async function getEthereumProxiesForNetwork(): Promise<{
-    priceFeeds: Array<any>;
+  getPools: async function getPools(): Promise<{
+    pools: Array<Pool>;
     inquirerChoices: Array<string>;
   }> {
-    const priceFeeds = await PriceFeeds.getEthereumProxiesForNetwork();
-    const tokenPairsSliced = priceFeeds.map((pair: any) => `${pair.pair}`);
-    const inquirerChoices = [
-      ...tokenPairsSliced.slice(0, 4),
-      QUESTION_NAMES.VIEW_FULL_LIST,
-      QUESTION_NAMES.SEARCH_TOKEN_PAIR,
-    ];
+    const tokenPairsSliced = Pools.map((pool: Pool) => pool.name);
+    const inquirerChoices = [...tokenPairsSliced];
     return {
-      priceFeeds,
+      pools: Pools,
       inquirerChoices,
     };
   },
-  selectTokenPairPricesToMock: async function selectTokenPairPricesToMock(): Promise<{
-    pairSelectionParsed: string;
-    priceFeeds: Array<any>;
-  }> {
-    const { priceFeeds, inquirerChoices } = await this.getEthereumProxiesForNetwork();
-    let pairSelection: any = await prompt(Questions.getConfigurablePriceFeedsQuestion(inquirerChoices));
-    let pairSelectionParsed = pairSelection[QUESTION_NAMES.CONFIGURABLE_FEEDS];
-
-    if (QUESTION_NAMES.VIEW_FULL_LIST === pairSelectionParsed) {
-      pairSelection = await prompt<number>(Questions.getAllPriceFeedsQuestion(priceFeeds.map((pf) => pf.pair)));
-      pairSelectionParsed = pairSelection[QUESTION_NAMES.CONFIGURABLE_FEEDS];
-      return { pairSelectionParsed, priceFeeds };
-    } else if (QUESTION_NAMES.SEARCH_TOKEN_PAIR === pairSelectionParsed) {
-      let searchedTickerSelection = await prompt(Questions.getTokenPairSearchValue());
-      let parsedQuery = searchedTickerSelection[QUESTION_NAMES.SEARCH_TOKEN_PAIR];
-      const filteredFeeds = priceFeeds.filter((pf) => {
-        return pf.pair.toLowerCase().includes(parsedQuery.toLowerCase());
-      });
-      return this.selectTokenPairFiltered(filteredFeeds);
+  selectPool: async function selectTokenPairPrselectPoolicesToMock(): Promise<Pool> {
+    const { pools, inquirerChoices } = await this.getPools();
+    let poolSelection: any = await prompt(Questions.getConfigurablePoolsQuestion(inquirerChoices));
+    let poolNameSelection = poolSelection[QUESTION_NAMES.CONFIGURABLE_POOLS];
+    logBlue(YOU_SELECTED + poolNameSelection);
+    const pool = pools.find((p) => p.name === poolNameSelection);
+    if (pool === undefined) {
+      throw new Error("pool selection invalid");
     }
-
-    logBlue(YOU_SELECTED + pairSelectionParsed);
-    return { pairSelectionParsed, priceFeeds };
+    return pool;
   },
-  selectAllTokenPairs: async function selectAllTokenPairs(providedFeeds: Array<any>): Promise<{
-    pairSelectionParsed: string;
-    priceFeeds: Array<any>;
-  }> {
-    const parsedArr = providedFeeds.map((pf) => pf.pair);
-    let pairSelection: any = await prompt(Questions.getConfigurablePriceFeedsQuestion(parsedArr));
-    let pairSelectionParsed = pairSelection[QUESTION_NAMES.CONFIGURABLE_FEEDS];
-    return {
-      pairSelectionParsed,
-      priceFeeds: providedFeeds,
-    };
-  },
-  selectTokenPairFiltered: async function selectTokenPairFiltered(providedFeeds: Array<any>): Promise<{
-    pairSelectionParsed: string;
-    priceFeeds: Array<any>;
-  }> {
-    const parsedArr = providedFeeds.map((pf) => pf.pair);
-    let pairSelection: any = await prompt(Questions.getConfigurablePriceFeedsQuestion(parsedArr));
-    let pairSelectionParsed = pairSelection[QUESTION_NAMES.CONFIGURABLE_FEEDS];
-    return {
-      pairSelectionParsed,
-      priceFeeds: providedFeeds,
-    };
-  },
-  selectMockFunction: async function selectMockFunction(): Promise<any> {
-    const mockFnSelection: any = await prompt(Questions.getMockFunctionQuestion());
-    logBlue(YOU_SELECTED + mockFnSelection[QUESTION_NAMES.MOCK_AGGREGATOR_SELECTION]);
-    return mockFnSelection[QUESTION_NAMES.MOCK_AGGREGATOR_SELECTION];
-  },
-  selectInitialValue: async function selectInitialValue(): Promise<any> {
-    const initValue = await prompt(Questions.getSelectInitialValueQuestion());
-    logBlue(YOU_SELECTED + initValue[QUESTION_NAMES.MOCK_AGGREGATOR_BASE_VALUE]);
-    return initValue;
-  },
-  selectPriceChange: async function selectPriceChange(): Promise<any> {
+  selectPrice: async function selectPriceChange(): Promise<number> {
     const valueChangeSelection = await prompt(Questions.getPriceChangeQuestion());
-    logBlue(YOU_SELECTED + valueChangeSelection[QUESTION_NAMES.MOCK_AGGREGATOR_VALUE_CHANGE]);
-    return valueChangeSelection;
+    logBlue(YOU_SELECTED + valueChangeSelection[QUESTION_NAMES.MOCK_PRICE_VALUE]);
+    return valueChangeSelection[QUESTION_NAMES.MOCK_PRICE_VALUE];
   },
-  selectBlockUpdateIntervalSize: async function selectBlockUpdateIntervalSize(): Promise<any> {
-    const blockUpdate = await prompt(Questions.getPriceChangeFrequency());
-    logBlue(YOU_SELECTED + blockUpdate[QUESTION_NAMES.MOCK_AGGREGATOR_CHANGE_PACE]);
-    return blockUpdate;
+  selectTwapInterval: async function selectBlockUpdateIntervalSize(): Promise<number> {
+    const interval = await prompt(Questions.geTwapInterval());
+    logBlue(YOU_SELECTED + interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE]);
+    return interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE];
   },
   mock: async function mock(pool: Pool, twapInteraval: number, price: number): Promise<void> {
     const rpcURL = "http://localhost:8545";
     const mocker = new UniSwapPoolMocker(rpcURL, pool.address);
 
-    const originalPrices = await mocker.prices(twapInteraval, 18, 6);
+    const originalPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
     logBlue(`Original Prices ${originalPrices}`);
 
     await mocker.MockPrice(price, twapInteraval, pool.decimals.token0, pool.decimals.token1);
+
+    const mockedPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
+    logBlue(`New Prices ${mockedPrices}`);
 
     logBlue(`Let's get to work 💼 😏 ...`);
     logYellow(figlet.textSync("Celebrate"));

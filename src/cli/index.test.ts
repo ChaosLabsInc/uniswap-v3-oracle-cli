@@ -8,9 +8,9 @@ test(`${CLI_TEST_SUITE} - welcomeMessage`, async () => {
 
 describe(`${CLI_TEST_SUITE} - getEthereumProxiesForNetwork`, () => {
   it("returns the pairSelection and priceFeeds ", async () => {
-    const { priceFeeds, inquirerChoices } = await cli.getEthereumProxiesForNetwork();
-    expect(Array.isArray(priceFeeds)).toBeTruthy();
-    expect(priceFeeds.length).toBeGreaterThan(0);
+    const { pools, inquirerChoices } = await cli.getPools();
+    expect(Array.isArray(pools)).toBeTruthy();
+    expect(pools.length).toBeGreaterThan(0);
     expect(Array.isArray(inquirerChoices)).toBeTruthy();
     expect(inquirerChoices.length).toBeGreaterThan(0);
   });
