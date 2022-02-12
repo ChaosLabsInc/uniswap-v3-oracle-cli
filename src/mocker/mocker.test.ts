@@ -36,10 +36,33 @@ test(`mocker`, async () => {
 
   //mock price:
   const twapInterval = 100;
-  await mocker.MockPrice(4, twapInterval, pool.decimals.token0, pool.decimals.token1);
+  const price = 4;
+  await mocker.MockPrice(price, twapInterval, pool.decimals.token0, pool.decimals.token1);
   const prices = await mocker.prices(twapInterval, pool.decimals.token0, pool.decimals.token1);
-  expect(prices[1]).toBeGreaterThan(3.9);
-  expect(prices[1]).toBeLessThan(4.1);
-  expect(prices[0]).toBeGreaterThan(1 / 4.1);
-  expect(prices[0]).toBeLessThan(1 / 3.9);
+  expect(prices[1]).toBeGreaterThan(price - 0.1);
+  expect(prices[1]).toBeLessThan(price + 0.1);
+  expect(prices[0]).toBeGreaterThan(1 / (price + 0.1));
+  expect(prices[0]).toBeLessThan(1 / (price - 0.1));
+});
+
+test(`mocker 2`, async () => {
+  const pool = Pools[1];
+  const mocker = new UniSwapPoolMocker(rpcURL, pool.address);
+  const poolContract = mocker.getPoolContract();
+
+  try {
+    await poolContract.observations([0]);
+  } catch (e) {
+    throw new Error("Cannot connect to local fork on 8545. This test requires a lock fork running.");
+  }
+
+  //mock price:
+  const twapInterval = 200;
+  const price = 1055;
+  await mocker.MockPrice(price, twapInterval, pool.decimals.token0, pool.decimals.token1);
+  const prices = await mocker.prices(twapInterval, pool.decimals.token0, pool.decimals.token1);
+  expect(prices[1]).toBeGreaterThan(price - 0.1);
+  expect(prices[1]).toBeLessThan(price + 0.1);
+  expect(prices[0]).toBeGreaterThan(1 / (price + 0.1));
+  expect(prices[0]).toBeLessThan(1 / (price - 0.1));
 });

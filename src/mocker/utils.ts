@@ -22,11 +22,13 @@ Note that BigNumber doesn't support decimals, so divding early gets a 0 result, 
 Be careful, setting the multiplier too low loses precision, setting too high can overflow result.
 */
 export function sqrtPriceX96ToTokenPrices(sqrtPriceX96: BigNumber, dec0: number, dec1: number): number[] {
-  const tempMultiplier = 10 ** 14;
-  const bigNumberTempMultiplier = BigNumber.from(tempMultiplier);
   const denom = BigNumber.from(2).pow(192);
+  const base = sqrtPriceX96.pow(2);
   const decPercision = 10 ** dec0 / 10 ** dec1;
-  let bnPrice1 = sqrtPriceX96.pow(2).mul(bigNumberTempMultiplier).div(denom);
+  const multiplierDigits = maxSafeMultiplierDigits(base, denom);
+  const tempMultiplier = 10 ** multiplierDigits;
+  const bigNumberTempMultiplier = BigNumber.from(tempMultiplier);
+  let bnPrice1 = base.mul(bigNumberTempMultiplier).div(denom);
   let price1 = (bnPrice1.toNumber() / tempMultiplier) * decPercision;
   let price0 = price1 === 0 ? 0 : 1 / price1;
   return [price0, price1];
@@ -50,6 +52,38 @@ export function priceToTickCulamtive(price: number, intevral: number, dec0: numb
   const sqrt = BNsqrt(bnPrice.mul(denom).div(decPercision));
   const tickFromSqrt = getTickAtSqrtRatio(sqrt);
   return tickFromSqrt.mul(intevral);
+}
+
+// finds the biggest multiplier that will not cause the BigNumber to overflow which turning back into number
+// we need this multiplier to keep BigNumber percision when dividing by the given denom.
+function maxSafeMultiplierDigits(bn: BigNumber, denom: BigNumber): number {
+  let times = 1;
+  while (
+    bn
+      .mul(10 ** times)
+      .div(denom)
+      .isZero()
+  ) {
+    times++;
+    //safety breaker:
+    if (times >= 14) {
+      break;
+    }
+  }
+  const max = BigNumber.from(Number.MAX_SAFE_INTEGER - 1);
+  while (
+    bn
+      .mul(10 ** (times + 1))
+      .div(denom)
+      .lt(max)
+  ) {
+    times++;
+    //safety breaker:
+    if (times >= 15) {
+      break;
+    }
+  }
+  return times;
 }
 
 function BNsqrt(value: BigNumber): BigNumber {

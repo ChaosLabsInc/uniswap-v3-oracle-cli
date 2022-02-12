@@ -6,7 +6,7 @@ test(`${CLI_TEST_SUITE} - welcomeMessage`, async () => {
   expect(await cli.welcomeMessage()).toBe(undefined);
 });
 
-describe(`${CLI_TEST_SUITE} - getEthereumProxiesForNetwork`, () => {
+describe(`${CLI_TEST_SUITE} - get desired pool`, () => {
   it("returns the pairSelection and priceFeeds ", async () => {
     const { pools, inquirerChoices } = await cli.getPools();
     expect(Array.isArray(pools)).toBeTruthy();
