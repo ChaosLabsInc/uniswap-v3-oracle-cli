@@ -4,17 +4,10 @@ import clear from "clear";
 import inquirer from "inquirer";
 import Questions from "../questions";
 import Utils from "../utils";
+import { Pool } from "../config/types";
 
 const Pools: Array<Pool> = require("../config/config.json");
-
-type Pool = {
-  name: string;
-  address: string;
-  decimals: {
-    token0: number;
-    token1: number;
-  };
-};
+const rpcURL = "http://localhost:8545";
 
 const YOU_SELECTED = "You selected ";
 const { logBlue, logGreen, logYellow } = Utils;
@@ -60,7 +53,6 @@ export = {
     return interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE];
   },
   mock: async function mock(pool: Pool, twapInteraval: number, price: number): Promise<void> {
-    const rpcURL = "http://localhost:8545";
     const mocker = new UniSwapPoolMocker(rpcURL, pool.address);
 
     const originalPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);

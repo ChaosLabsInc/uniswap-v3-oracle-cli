@@ -78,9 +78,6 @@ export class UniSwapPoolMocker {
     const obs: Observation[] = [];
     for (let i = 0; i < slot0.observationCardinality; i++) {
       const ob = (await pool.observations(i)) as Observation;
-      // if (!ob.tickCumulative.isZero()) {
-      //   throw "Zero observation failed";
-      // } TODO TODO TODO
       obs.push(ob);
     }
     this.observations = obs;
