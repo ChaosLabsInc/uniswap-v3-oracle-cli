@@ -89,6 +89,9 @@ export class UniSwapPoolMocker {
   }
 
   async MockPrice(price: number, twapInterval: number, dec0: number, dec1: number): Promise<void> {
+    if (price === 0) {
+      throw new Error("'0' Price is not supported - but you can use very small fractions");
+    }
     if (twapInterval === 0) {
       const tickCul = priceToTickCulamtive(price, 1, dec0, dec1);
       await this.OverrideSlot0Tick(tickCul.toNumber());

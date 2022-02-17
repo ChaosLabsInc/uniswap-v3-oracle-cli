@@ -53,18 +53,22 @@ export = {
     return interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE];
   },
   mock: async function mock(pool: Pool, twapInteraval: number, price: number): Promise<void> {
-    const mocker = new UniSwapPoolMocker(rpcURL, pool.address);
+    try {
+      const mocker = new UniSwapPoolMocker(rpcURL, pool.address);
 
-    const originalPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
-    logBlue(`Original Prices ${originalPrices}`);
+      const originalPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
+      logBlue(`Original Prices ${originalPrices}`);
 
-    await mocker.MockPrice(price, twapInteraval, pool.decimals.token0, pool.decimals.token1);
+      await mocker.MockPrice(price, twapInteraval, pool.decimals.token0, pool.decimals.token1);
 
-    const mockedPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
-    logBlue(`New Prices ${mockedPrices}`);
+      const mockedPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
+      logBlue(`New Prices ${mockedPrices}`);
 
-    logBlue(`Let's get to work 💼 😏 ...`);
-    logYellow(figlet.textSync("Celebrate"));
-    logBlue(`You are a shadowy super code 🔥 ✨ 😏 ...`);
+      logBlue(`Let's get to work 💼 😏 ...`);
+      logYellow(figlet.textSync("Celebrate"));
+      logBlue(`You are a shadowy super code 🔥 ✨ 😏 ...`);
+    } catch (err) {
+      logYellow(`${err}`);
+    }
   },
 };
