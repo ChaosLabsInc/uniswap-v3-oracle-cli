@@ -58,6 +58,10 @@ After running the quickstart you should have the following: 2 terminals, 1 runni
 
 This repo is meant to serve as an implementation spec for mocking oracle return values. This is a resource and reference for smart contract developers to implement such strategies and practices as part of their development lifecycle.
 
+
+* **Note** - _Interacting with the mocked Uniswap Pool with actions that can change the pool state, like trading, may effect the mock return values. For such cases it is recommmended to call the mock function again after every state changing interaction._
+
+
 ## Example Flow
 
 1. Select a pair pool to configure / mock (ETH/USD, SNX/DAI etc...)
@@ -69,11 +73,6 @@ This repo is meant to serve as an implementation spec for mocking oracle return 
 4. Mock 🤝 💥
 
 ![Example Flow](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ExampleFlow.png)
-
-## Usage Disclaimer
-
-Interacting with the mocked Uniswap Pool with actions that can change the pool state, like trading, may effect the mock return values. For such cases it is recommmended to call the mock function again after every state changing interaction.
-
 
 ## PR Requests
 
