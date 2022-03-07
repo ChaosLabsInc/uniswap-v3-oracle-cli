@@ -70,6 +70,11 @@ This repo is meant to serve as an implementation spec for mocking oracle return 
 
 ![Example Flow](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ExampleFlow.png)
 
+## Usage Disclaimer
+
+Interacting with the mocked Uniswap Pool with actions that can change the pool state, like trading, may effect the mock return values. For such cases it is recommmended to call the mock function again after every state changing interaction.
+
+
 ## PR Requests
 
 Before submitting a PR please run the test suite with `npm run test`.
