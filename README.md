@@ -74,6 +74,15 @@ This repo is meant to serve as an implementation spec for mocking oracle return 
 
 ![Example Flow](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ExampleFlow.png)
 
+
+### Example Usage of the CLI
+Assuming you have a trading dApp using Uniswap TWAP Oracles, and you want to test how you handle significant price changes for the trading pairs:
+1. Start a hardhat node
+2. Deploy your app to the local node
+3. start the CLI and change the price for a given pair
+4. see how your app handles the change
+
+
 ## PR Requests
 
 Before submitting a PR please run the test suite with `npm run test`.
