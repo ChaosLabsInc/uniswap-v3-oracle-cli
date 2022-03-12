@@ -1,12 +1,12 @@
-![Chaos Labs - Chainlink Collab](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ChaosLabsUniswap.jpg)
+![Chaos Labs - Uniswap Collaboration](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ChaosLabsUniswap.jpg)
 
-This repository hosts a CLI utitlity for mocking Uniswap V3 Oracle prices in a local hardhat mainnet fork testing environment. Navigate to our [Quickstart](#quickstart) section to get the repo up and running.
+This repository hosts a CLI utitlity for configuring Uniswap V3 Oracle prices in a local hardhat mainnet fork testing environment. Navigate to our [Quickstart](#quickstart) section to get the repo up and running.
 
 For a full deep dive to the project architecture please visit the [Chaos Labs blog](https://chaoslabs.xyz/blog).
 
 ## Why is Mocking Oracle values useful in testing?
 
-Oracle values trigger internal state changes in web3 applications. Currently, when forking mainnent, oracle returns values are constant or in the case of TWAP oracles, require unreasoable amount of trading volume in the respective pool to change the prices. This is because TWAP oracle prices are determined by the ratio of liquidity in the pools at the time of the observations recorded, when the liquidity pools are vast, chnainging the price becomes extremely difficult. We want the ability to mock return values easily, so we can test how our contracts / applications react to different types of external data, hence this tool. Below, we provide some specific use cases for mocking oracle return values.
+Oracle return values trigger internal state changes in web3 applications. When forking mainnent, TWAP oracles are static by default since no trades are executed in an isolated forked network.  If you're application consumes price data and initiates control flows based on these values, being able to test a range of prices is critical. However, this moving prices requires an unreasoable amount of trades in pools. This is because TWAP oracle prices are determined by the ratio of liquidity in the pools at the time of the observations recorded. When we have a myriad of liquidity pools configuring prices can become a tedious process that involves a lot of custom scripting and hacks. Chaos Labs aims to streamline developer productivity while also making it easier to test applications. We want the ability to mock return values easily, so we can test how our contracts / applications react to different types of external data, hence this tool. Below, we provide some specific use cases for mocking oracle return values.
 
 ## Use Cases
 
@@ -14,7 +14,7 @@ DeFi protocols and applications are at high risk due to volatile market conditio
 
 **Volatile Market Conditions**
 
-Volatility is a DeFi constant and is something that all protocols and applications should test for thoroughly. Internal application and protocol state is often a direct result of Oracle returns values. To further illustrate this let's use an example.
+Volatility is a DeFi constant and is something that all protocols and applications should test for thoroughly. Internal application and protocol state is often a direct result of Oracle returns values. Because of this, controlling oracle return values in development is extremely powerful. To further illustrate this let's use an example.
 
 Imagine a lending protocol (Maker, AAVE, Benqi, Spectral.finance, etc..) that accepts Ethereum as collateral against stablecoin loans. What happens on a day like Black Thursday, when Ethereum prices cascade negatively to the tune of ~70% in a 48 hour time frame? Well, a lot of things happen 🤦.
 
@@ -37,7 +37,7 @@ Our command-line tool is written in Typescript. Typescript introduces type safet
 - `npm i -g ts-node`
 - Confirm `ts-node` installed correctly by running `ts-node` to run typescript (``) in a terminal window.
 
-Next, we'll want to run a mainnet fork. We need the fork so we can have a snapshot of all deployed Uniswap Pools and access to their Oracle interfaces. Uniswap v3 Oracles interface can be somewhat daunting at first, that's why recommend reading the offical docs if you not familiar or read our blog post about it in the [Chaos Labs blog](https://chaoslabs.xyz/blog). `Hardhat` has an Alchemy integration. In order to fork mainnet you need an API key, so navigate to the alchemy site and sign up for one.
+Next, we'll want to run a mainnet fork. We need the fork so we can have a snapshot of all deployed Uniswap Pools and access to their Oracle interfaces. Uniswap v3 Oracles interface can be challenging to grok at first. That's why recommend reading the offical docs as well as checking out the [Chaos Labs blog](https://chaoslabs.xyz/blog). `Hardhat` has an Alchemy integration. In order to fork mainnet you need an API key, so navigate to the alchemy site and sign up for one.
 
 - Alchemy API key for mainnet fork access: [Get one here](https://www.alchemy.com/).
 
@@ -59,7 +59,7 @@ After running the quickstart you should have the following: 2 terminals, 1 runni
 This repo is meant to serve as an implementation spec for mocking oracle return values. This is a resource and reference for smart contract developers to implement such strategies and practices as part of their development lifecycle.
 
 
-* **Note** - _Interacting with the mocked Uniswap Pool with actions that can change the pool state, like trading, may effect the mock return values. For such cases it is recommmended to call the mock function again after every state changing interaction._
+* **Note** - _Interacting with Uniswap Pools will change pool state. Our implementation for configuring return values of TWAPs involves manipulating observations stored for every pool. Because of this, you will need to invoke the set method for a given pool after every state changing interaction._
 
 
 ## Example Flow
