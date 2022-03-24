@@ -2,8 +2,7 @@
   "name": "chaos-labs-configure-chainlink-oracles",
   "scripts": {
     "start": "ts-node --files index.ts",
-    "test": "jest --verbose",
-    "build": "npx tsc -b"
+    "test": "jest --verbose"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",

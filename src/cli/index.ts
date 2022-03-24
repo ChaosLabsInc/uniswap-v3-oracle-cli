@@ -44,13 +44,21 @@ export = {
   },
   selectPrice: async function selectPriceChange(): Promise<number> {
     const valueChangeSelection = await prompt(Questions.getPriceChangeQuestion());
-    logBlue(YOU_SELECTED + valueChangeSelection[QUESTION_NAMES.MOCK_PRICE_VALUE]);
-    return valueChangeSelection[QUESTION_NAMES.MOCK_PRICE_VALUE];
+    const val =
+      valueChangeSelection[QUESTION_NAMES.MOCK_PRICE_VALUE].length > 0
+        ? valueChangeSelection[QUESTION_NAMES.MOCK_PRICE_VALUE][0]
+        : valueChangeSelection[QUESTION_NAMES.MOCK_PRICE_VALUE];
+    logBlue(YOU_SELECTED + val);
+    return val;
   },
   selectTwapInterval: async function selectBlockUpdateIntervalSize(): Promise<number> {
     const interval = await prompt(Questions.geTwapInterval());
-    logBlue(YOU_SELECTED + interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE]);
-    return interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE];
+    const val =
+      interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE].length > 0
+        ? interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE][0]
+        : interval[QUESTION_NAMES.MOCK_TWAP_INTERVAL_VALUE];
+    logBlue(YOU_SELECTED + val);
+    return val;
   },
   mock: async function mock(pool: Pool, twapInteraval: number, price: number): Promise<void> {
     try {
