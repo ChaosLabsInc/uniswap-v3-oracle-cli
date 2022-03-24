@@ -4,9 +4,11 @@ This repository hosts a CLI utitlity for configuring Uniswap V3 Oracle prices in
 
 For a full deep dive to the project architecture please visit the [Chaos Labs blog](https://chaoslabs.xyz/blog).
 
+<img src="./demo/demo.svg">
+
 ## Why is Mocking Oracle values useful in testing?
 
-Oracle return values trigger internal state changes in web3 applications. When forking mainnent, TWAP oracles are static by default since no trades are executed in an isolated forked environment.  If you're application consumes price data and initiates control flows based on these values, being able to test a range of prices is critical. However, manipulating prices to bring an application to a specific state requires an unreasoable amount of trades in pools. This is because TWAP oracle prices are determined by the pair ratio of liquidity in the pools at the time of the observations recorded. When we have a myriad of liquidity pools configuring prices can become a tedious process that involves a lot of custom scripting and hacks. Chaos Labs aims to streamline developer productivity while also making it easier to test applications. This tool gives developers the ability to mock return values easily. Now we can test how our contracts / applications react to different types of external data 🤗. Below, we provide some specific use cases for mocking oracle return values.
+Oracle return values trigger internal state changes in web3 applications. When forking mainnent, TWAP oracles are static by default since no trades are executed in an isolated forked environment. If you're application consumes price data and initiates control flows based on these values, being able to test a range of prices is critical. However, manipulating prices to bring an application to a specific state requires an unreasoable amount of trades in pools. This is because TWAP oracle prices are determined by the pair ratio of liquidity in the pools at the time of the observations recorded. When we have a myriad of liquidity pools configuring prices can become a tedious process that involves a lot of custom scripting and hacks. Chaos Labs aims to streamline developer productivity while also making it easier to test applications. This tool gives developers the ability to mock return values easily. Now we can test how our contracts / applications react to different types of external data 🤗. Below, we provide some specific use cases for mocking oracle return values.
 
 ## Use Cases
 
@@ -58,9 +60,7 @@ After running the quickstart you should have the following: 2 terminals, 1 runni
 
 This repo is meant to serve as an implementation spec for mocking oracle return values. This is a resource and reference for smart contract developers to implement such strategies and practices as part of their development lifecycle.
 
-
-* **Note** - _Interacting with Uniswap Pools will change pool state. Our implementation for configuring return values of TWAPs involves manipulating observations stored for every pool. Because of this, you will need to invoke the set method for a given pool after every state changing interaction._
-
+- **Note** - _Interacting with Uniswap Pools will change pool state. Our implementation for configuring return values of TWAPs involves manipulating observations stored for every pool. Because of this, you will need to invoke the set method for a given pool after every state changing interaction._
 
 ## Example Flow
 
@@ -74,14 +74,14 @@ This repo is meant to serve as an implementation spec for mocking oracle return 
 
 ![Example Flow](https://github.com/ChaosLabsInc/uniswap-v3-oracle-cli/blob/main/img/ExampleFlow.png)
 
-
 ### Example Usage of the CLI
+
 Assuming you have a trading dApp using Uniswap TWAP Oracles, and you want to test how you handle significant price changes for the trading pairs:
+
 1. Start a hardhat node
 2. Deploy your app to the local node
 3. start the CLI and change the price for a given pair
 4. see how your app handles the change
-
 
 ## PR Requests
 
