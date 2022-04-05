@@ -1,4 +1,4 @@
-import { UniSwapPoolMocker } from "../mocker";
+import { UniSwapPoolMocker } from "@chaos-labs/uniswap-v3-pool-mocker";
 import figlet from "figlet";
 import clear from "clear";
 import inquirer from "inquirer";
@@ -64,12 +64,12 @@ export = {
     try {
       const mocker = new UniSwapPoolMocker(rpcURL, pool.address);
 
-      const originalPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
+      const originalPrices = await mocker.Prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
       logBlue(`Original Prices ${originalPrices}`);
 
       await mocker.MockPrice(price, twapInteraval, pool.decimals.token0, pool.decimals.token1);
 
-      const mockedPrices = await mocker.prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
+      const mockedPrices = await mocker.Prices(twapInteraval, pool.decimals.token0, pool.decimals.token1);
       logBlue(`New Prices ${mockedPrices}`);
 
       logBlue(`Let's get to work 💼 😏 ...`);
